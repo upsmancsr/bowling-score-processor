@@ -1,0 +1,24 @@
+# .gitignore
+
+# Ignore the Python virtual environment:
+/env/
+
+# Ignore Python build artifacts:
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ignore Python distribution artifacts:
+*.egg
+*.egg-info/
+dist/
+build/
+*.tar.gz
+
+# Ignore IDE and editor files:
+.vscode/
+*.swp
+*.swo
+*.swn
+.idea/
