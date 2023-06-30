@@ -13,34 +13,52 @@
 
 def calculate_scores(rolls):
     frames = []
-    scores = []
-    current_frame = []
+    frame = []
 
     for roll in rolls:
-        if roll == "X":
-            current_frame.append(10)
-        elif roll == "/":
-            current_frame.append(10 - sum(current_frame))
-        else:
-            current_frame.append(roll)
-            
-        if sum(current_frame) >= 10 or len(current_frame) == 2:
-            frames.append(current_frame)
-            current_frame = []
+        if roll == "X":  # Strike
+            frame.append(10)
+            frames.append(frame)
+            frame = []
+        elif roll == "/":  # Spare
+            frame.append(10 - frame[0])
+            frames.append(frame)
+            frame = []
+        else:  # Numeric roll
+            frame.append(int(roll))
+            if len(frame) == 2:
+                frames.append(frame)
+                frame = []
 
+    if frame:  # Last frame is in progress
+        frames.append(frame)
+
+    scores = []
     for i, frame in enumerate(frames):
-        frame_score = sum(frame)
-        if 10 in frame and i + 1 < len(frames):  # strike or spare
-            frame_score += sum(frames[i + 1][:2 if len(frame) == 1 else 1])
-        scores.append(frame_score)
-        
-    return scores[:10]  # Only return scores for the first 10 frames
+        if len(frame) == 1:  # Strike
+            if i + 2 < len(frames):  # Two following frames exist
+                scores.append(10 + frames[i+1][0] + frames[i+2][0])
+            elif i + 1 < len(frames) and len(frames[i+1]) == 2:  # One following frame exists and is complete
+                scores.append(10 + frames[i+1][0] + frames[i+1][1])
+            else:  # Not enough rolls after the strike to calculate the score yet
+                scores.append(None)
+        elif frame[0] + frame[1] == 10:  # Spare
+            if i+1 < len(frames) and len(frames[i+1]) > 0:  # Following frame exists and has at least one roll
+                scores.append(10 + frames[i+1][0])
+            else:  # Not enough rolls after the spare to calculate the score yet
+                scores.append(None)
+        else:  # Open frame
+            scores.append(sum(frame))
+
+    return scores
+
 
 
 # If you want to run this file directly in terminal with `python calculator.py`
 # here are some print statements testing various scenarios
 if __name__ == "__main__":
     print(calculate_scores([4, 5, "X", 8, 1]))  # Expected output: [9, 19, 9]
-    print(calculate_scores([4, 5, "X", 8]))  # Expected output: [9]
-    print(calculate_scores(["X", "X", 8]))  # Expected output: [20, 10]
+    print(calculate_scores([4, 5, "X", 8]))  # Expected output: [9, None, None]
+    print(calculate_scores(["X", "X", 8]))  # Expected output: [None, None, None]
+    print(calculate_scores(["X", 4, "/", 1, 3, 5, "/", 5, 2]))
 
