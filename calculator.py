@@ -24,6 +24,8 @@ def calculate_scores(rolls):
     return scores[:10]  # Only return scores for the first 10 frames
 
 
+# If you want to run this file directly in terminal with `python calculator.py`
+# here are some print statements testing various scenarios
 if __name__ == "__main__":
     print(calculate_scores([4, 5, "X", 8, 1]))  # Expected output: [9, 19, 9]
     print(calculate_scores([4, 5, "X", 8]))  # Expected output: [9]
