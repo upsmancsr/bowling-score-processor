@@ -60,5 +60,5 @@ if __name__ == "__main__":
     print(calculate_scores([4, 5, "X", 8, 1]))  # Expected output: [9, 19, 9]
     print(calculate_scores([4, 5, "X", 8]))  # Expected output: [9, None, None]
     print(calculate_scores(["X", "X", 8]))  # Expected output: [None, None, None]
-    print(calculate_scores(["X", 4, "/", 1, 3, 5, "/", 5, 2]))
+    print(calculate_scores(["X", 4, "/", 1, 3, 5, "/", 5, 2]))  # Expected output: [15, 11, 4, 15, 7]
 
